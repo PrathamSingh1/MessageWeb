@@ -20,7 +20,7 @@ const LocationSender = () => {
 
       const data = await res.json();
       console.log("Server response:", data);
-      setStatus("I Love You Bauua♥");
+      setStatus("I Love You Bauua ❤️🥰");
     } catch (err) {
       console.error(err);
       setStatus("You did something wrong⚠");
@@ -85,7 +85,7 @@ const LocationSender = () => {
           <p>
             {/* <strong>Latitude:</strong> {coords.latitude} */}
             {coords.latitude && (
-              <p>Annu, when I call you Baccha or Bauua, it's not just a name — it's a feeling. A feeling that you're mine, and I'm yours, forever. 💫</p>
+              <p>Annu, when I call you Baccha or Bauua, it's not just a name — it's a feeling. A feeling that you're mine, and I'm yours, forever so please don't call anyone else sundar I Love You ❤️ 💫</p>
             )}
           </p>
           <p>
