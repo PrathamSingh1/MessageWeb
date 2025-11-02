@@ -10,7 +10,22 @@ dotenv.config();
 
 const app = express();
 app.use(helmet());
-app.use(cors());
+const allowedOrigins = [
+  "https://message-web-pied.vercel.app", // your Vercel frontend
+  "http://localhost:5173",               // for local dev
+];
+
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      // allow requests with no origin (mobile apps, curl, etc.)
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.includes(origin)) return callback(null, true);
+      return callback(new Error("Not allowed by CORS"));
+    },
+    credentials: true,
+  })
+);
 app.use(express.json());
 
 const PORT = process.env.PORT || 4000;
