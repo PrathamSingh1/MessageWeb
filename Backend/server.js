@@ -1,10 +1,12 @@
 // server.js
-require("dotenv").config();
-const express = require("express");
-const mongoose = require("mongoose");
-const helmet = require("helmet");
-const cors = require("cors");
-const Location = require("./models/Location");
+import dotenv from "dotenv";
+import express from "express";
+import mongoose from "mongoose";
+import helmet from "helmet";
+import cors from "cors";
+import Location from "./models/Location.js"; // <-- add .js extension
+
+dotenv.config();
 
 const app = express();
 app.use(helmet());
@@ -21,28 +23,14 @@ if (!MONGODB_URI) {
 
 mongoose
   .connect(MONGODB_URI, { dbName: process.env.DB_NAME || undefined })
-  .then(() => console.log("Connected to MongoDB"))
+  .then(() => console.log("✅ Connected to MongoDB"))
   .catch((err) => {
-    console.error("MongoDB connection error:", err);
+    console.error("❌ MongoDB connection error:", err);
     process.exit(1);
   });
 
 /**
  * POST /location
- * Body (JSON): {
- *   userId?: string,
- *   latitude: number,
- *   longitude: number,
- *   accuracy?: number,
- *   altitude?: number,
- *   heading?: number,
- *   speed?: number,
- *   provider?: string,
- *   meta?: object
- * }
- *
- * NOTE: This endpoint is intentionally left WITHOUT auth as requested.
- *       Anyone who can reach this endpoint can POST locations.
  */
 app.post("/location", async (req, res) => {
   try {
@@ -63,7 +51,7 @@ app.post("/location", async (req, res) => {
       provider: provider || "unknown",
       ip: req.ip || req.headers["x-forwarded-for"],
       userAgent: req.headers["user-agent"],
-      meta
+      meta,
     });
 
     await doc.save();
@@ -76,8 +64,6 @@ app.post("/location", async (req, res) => {
 
 /**
  * GET /location/:userId/latest
- * returns the most recent location for the given userId
- * (or use /location/id/:id to get by document id)
  */
 app.get("/location/:userId/latest", async (req, res) => {
   try {
@@ -91,6 +77,9 @@ app.get("/location/:userId/latest", async (req, res) => {
   }
 });
 
+/**
+ * GET /locations/:userId
+ */
 app.get("/locations/:userId", async (req, res) => {
   try {
     const { userId } = req.params;
@@ -103,6 +92,9 @@ app.get("/locations/:userId", async (req, res) => {
   }
 });
 
+/**
+ * GET /location/id/:id
+ */
 app.get("/location/id/:id", async (req, res) => {
   try {
     const doc = await Location.findById(req.params.id).lean();
@@ -115,5 +107,5 @@ app.get("/location/id/:id", async (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`Location backend listening on port ${PORT}`);
+  console.log(`🚀 Location backend listening on port ${PORT}`);
 });
