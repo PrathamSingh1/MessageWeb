@@ -6,7 +6,7 @@ const LocationSender = () => {
 
   const sendLocation = async (latitude, longitude) => {
     try {
-      const res = await fetch("http://localhost:4000/location", {
+      const res = await fetch("https://messageweb-njt9.onrender.com/location", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
