@@ -59,10 +59,9 @@ const LocationSender = () => {
 
   return (
     <div style={{ textAlign: "center", marginTop: "3rem" }}>
-      <h1>Tere bina sab adhoora lagta hai,
-      Tere bina har pal zara udaas lagta hai,
-      Tu hai mera Baccha, tu hi meri Annu,
-      Tu paas ho toh har din khaas lagta hai. 💞</h1>
+      <h1>karti ho jhagda to bahut pyari lagti ho,
+        pahenti ho jab saree to sundar aur sanskari lagti ho,
+        jee karta hai kar lu der sara pyar tabhi yaad ata hai gusse me gudunnuwa humari lagti ho 💞</h1>
       <button
         onClick={handleSendLocation}
         style={{
@@ -85,8 +84,84 @@ const LocationSender = () => {
           <p>
             {/* <strong>Latitude:</strong> {coords.latitude} */}
             {coords.latitude && (
-              <p>Annu, when I call you Baccha or Bauua, it's not just a name — it's a feeling. A feeling that you're mine, and I'm yours, forever so please don't call anyone else sundar I Love You ❤️ 💫</p>
-            )}
+  <div
+    style={{
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      gap: "0.6rem",
+      marginTop: "1rem",
+      padding: "1rem 1.2rem",
+      borderRadius: "12px",
+      boxShadow: "0 8px 24px rgba(0,0,0,0.12)",
+      background: "linear-gradient(135deg,#fff7fb,#fff1f6)",
+      maxWidth: "520px",
+      marginLeft: "auto",
+      marginRight: "auto",
+      cursor: "default",
+    }}
+  >
+    {/* Inline stylesheet for animations */}
+    <style>{`
+      .luv-hearts { position: relative; width: 120px; height: 40px; display: flex; justify-content: center; gap: 8px; }
+      .luv-hearts span {
+        font-size: 26px;
+        transform-origin: center;
+        animation: float 2.4s infinite ease-in-out;
+        filter: drop-shadow(0 4px 8px rgba(255,0,120,0.12));
+      }
+      .luv-hearts span:nth-child(1){ animation-delay: 0s; }
+      .luv-hearts span:nth-child(2){ animation-delay: 0.18s; transform: scale(0.95); }
+      .luv-hearts span:nth-child(3){ animation-delay: 0.36s; transform: scale(0.9); }
+
+      @keyframes float {
+        0% { transform: translateY(0) scale(1); opacity: 1; }
+        50% { transform: translateY(-10px) scale(1.06); opacity: 0.95; }
+        100% { transform: translateY(0) scale(1); opacity: 1; }
+      }
+
+      .luv-title { font-size: 1.05rem; margin: 0; font-weight: 700; letter-spacing: 0.2px; color: #2b2b2b; text-align:center; }
+      .luv-sub { margin: 0.2rem 0 0.6rem 0; font-size: 0.95rem; color: #4b4b4b; text-align:center; line-height:1.35; }
+      .luv-btn {
+        background: linear-gradient(90deg,#ff4da6,#ff7abf);
+        border: none;
+        padding: 8px 14px;
+        border-radius: 999px;
+        color: white;
+        font-weight: 600;
+        cursor: pointer;
+        box-shadow: 0 6px 18px rgba(255,90,150,0.18);
+      }
+      .luv-btn:active { transform: translateY(1px); }
+      .luv-small { font-size: 0.85rem; color: #7b7b7b; margin-top: 0.6rem; text-align:center; }
+    `}</style>
+
+    <div className="luv-hearts" aria-hidden>
+      <span>💖</span>
+      <span>💘</span>
+      <span>✨</span>
+    </div>
+
+    <h3 className="luv-title">Annu — my Baccha, my Bauua</h3>
+
+    <p className="luv-sub">
+      Whenever I think of you, the whole world softens — your laugh becomes my song,
+      your presence becomes my home. You are my favorite hello and my hardest goodbye.
+      I never wanted to say you goodbye i wanted to spend my life with you , make you smile,
+      adore you, love you, take care of you in the moment you feel low like you are feeling right now.
+      You are everything to me so please take care of you a little bit more ❤️
+    </p>
+
+    <button
+      className="luv-btn"
+      title="Play message for Annu"
+    >
+      I love you ❤️
+    </button>
+
+    <div className="luv-small">Tip: Eat well and sleep well I love you so much my betu ❤️ — made with love.</div>
+  </div>
+)}
           </p>
           <p>
             {/* <strong>Longitude:</strong> {coords.longitude} */}
