@@ -59,9 +59,7 @@ const LocationSender = () => {
 
   return (
     <div style={{ textAlign: "center", marginTop: "3rem" }}>
-      <h1>karti ho jhagda to bahut pyari lagti ho,
-        pahenti ho jab saree to sundar aur sanskari lagti ho,
-        jee karta hai kar lu der sara pyar tabhi yaad ata hai gusse me gudunnuwa humari lagti ho 💞</h1>
+      <h1>Janta hu nhi hu tumhare pass par karta hu ab bhi tumse hi pyar ate hai sapne tumhare raat me kya ho nhi sakti tum mere sath me.💞</h1>
       <button
         onClick={handleSendLocation}
         style={{
@@ -84,83 +82,37 @@ const LocationSender = () => {
           <p>
             {/* <strong>Latitude:</strong> {coords.latitude} */}
             {coords.latitude && (
-  <div
-    style={{
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
-      gap: "0.6rem",
-      marginTop: "1rem",
-      padding: "1rem 1.2rem",
-      borderRadius: "12px",
-      boxShadow: "0 8px 24px rgba(0,0,0,0.12)",
-      background: "linear-gradient(135deg,#fff7fb,#fff1f6)",
-      maxWidth: "520px",
-      marginLeft: "auto",
-      marginRight: "auto",
-      cursor: "default",
-    }}
-  >
-    {/* Inline stylesheet for animations */}
-    <style>{`
-      .luv-hearts { position: relative; width: 120px; height: 40px; display: flex; justify-content: center; gap: 8px; }
-      .luv-hearts span {
-        font-size: 26px;
-        transform-origin: center;
-        animation: float 2.4s infinite ease-in-out;
-        filter: drop-shadow(0 4px 8px rgba(255,0,120,0.12));
-      }
-      .luv-hearts span:nth-child(1){ animation-delay: 0s; }
-      .luv-hearts span:nth-child(2){ animation-delay: 0.18s; transform: scale(0.95); }
-      .luv-hearts span:nth-child(3){ animation-delay: 0.36s; transform: scale(0.9); }
+              <div>
+  <h3 className="luv-title">Happy New Year 2026, Annu — my Baccha, my Bauua 🎆</h3>
 
-      @keyframes float {
-        0% { transform: translateY(0) scale(1); opacity: 1; }
-        50% { transform: translateY(-10px) scale(1.06); opacity: 0.95; }
-        100% { transform: translateY(0) scale(1); opacity: 1; }
-      }
+<p className="luv-sub">
+  As this new year begins, I just want you to know — you are my favorite part of every
+  day and my biggest blessing in every year.  
+  2025 was beautiful because of you, and I know 2026 will be even more special with
+  your smile, your laugh, your presence in my life.  
 
-      .luv-title { font-size: 1.05rem; margin: 0; font-weight: 700; letter-spacing: 0.2px; color: #2b2b2b; text-align:center; }
-      .luv-sub { margin: 0.2rem 0 0.6rem 0; font-size: 0.95rem; color: #4b4b4b; text-align:center; line-height:1.35; }
-      .luv-btn {
-        background: linear-gradient(90deg,#ff4da6,#ff7abf);
-        border: none;
-        padding: 8px 14px;
-        border-radius: 999px;
-        color: white;
-        font-weight: 600;
-        cursor: pointer;
-        box-shadow: 0 6px 18px rgba(255,90,150,0.18);
-      }
-      .luv-btn:active { transform: translateY(1px); }
-      .luv-small { font-size: 0.85rem; color: #7b7b7b; margin-top: 0.6rem; text-align:center; }
-    `}</style>
+  I wish this year brings you calm mornings, peaceful nights, endless happiness,
+  and everything your heart truly deserves.  
+  No matter where life takes us, I promise to keep choosing you — in every moment,
+  in every season, in every year.  
 
-    <div className="luv-hearts" aria-hidden>
-      <span>💖</span>
-      <span>💘</span>
-      <span>✨</span>
-    </div>
+  Take care of yourself a little more this year, okay?  
+  You mean the world to me, today and always ❤️
+</p>
 
-    <h3 className="luv-title">Annu — my Baccha, my Bauua</h3>
+<button
+  className="luv-btn"
+  title="Play message for Annu"
+>
+  Cheers to Us — 2026 ❤️
+</button>
 
-    <p className="luv-sub">
-      Whenever I think of you, the whole world softens — your laugh becomes my song,
-      your presence becomes my home. You are my favorite hello and my hardest goodbye.
-      I never wanted to say you goodbye i wanted to spend my life with you , make you smile,
-      adore you, love you, take care of you in the moment you feel low like you are feeling right now.
-      You are everything to me so please take care of you a little bit more ❤️
-    </p>
+<div className="luv-small">
+  Tip: Drink more water, smile more often, and never forget how deeply you are loved.  
+  Happy New Year, my betu ❤️ — made with love.
+</div>
+</div>
 
-    <button
-      className="luv-btn"
-      title="Play message for Annu"
-    >
-      I love you ❤️
-    </button>
-
-    <div className="luv-small">Tip: Eat well and sleep well I love you so much my betu ❤️ — made with love.</div>
-  </div>
 )}
           </p>
           <p>
