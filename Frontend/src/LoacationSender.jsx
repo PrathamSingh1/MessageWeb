@@ -88,8 +88,7 @@ const LocationSender = () => {
 <p className="luv-sub">
   As this new year begins, I just want you to know — you are my favorite part of every
   day and my biggest blessing in every year.  
-  2025 was beautiful because of you, and I know 2026 will be even more special with
-  your smile, your laugh, your presence in my life.  
+  2025 was beautiful because of you, and I you choose me in 2026 and promise me to be my betu forever i will make you smile, laugh, and take care of you rest of my life.  
 
   I wish this year brings you calm mornings, peaceful nights, endless happiness,
   and everything your heart truly deserves.  
@@ -109,7 +108,7 @@ const LocationSender = () => {
 
 <div className="luv-small">
   Tip: Drink more water, smile more often, and never forget how deeply you are loved.  
-  Happy New Year, my betu ❤️ — made with love.
+  Happy New Year, my betu ❤️
 </div>
 </div>
 
