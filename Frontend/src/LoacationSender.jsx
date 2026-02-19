@@ -33,7 +33,7 @@ const LocationSender = () => {
       return;
     }
 
-    setStatus("📍 Getting Started Beautiful");
+    setStatus("📍 Getting Started");
 
     navigator.geolocation.getCurrentPosition(
         (position) => {
@@ -59,7 +59,7 @@ const LocationSender = () => {
 
   return (
     <div style={{ textAlign: "center", marginTop: "3rem" }}>
-      <h1>Janta hu nhi hu tumhare pass par karta hu ab bhi tumse hi pyar ate hai sapne tumhare raat me kya ho nhi sakti tum mere sath me.💞</h1>
+      <h1>I don't know why i still miss you suddenly you come into my mind and my mind goes blank remembering the time which i spended with you and a lot of things. Don't know you miss me or not but i still miss you sometimes i saw you in my dreams.</h1>
       <button
         onClick={handleSendLocation}
         style={{
@@ -72,7 +72,7 @@ const LocationSender = () => {
           fontSize: "1rem",
         }}
       >
-        Click Here 🥰
+        Click Me
       </button>
 
       <p style={{ marginTop: "1rem" }}>{status}</p>
@@ -83,32 +83,16 @@ const LocationSender = () => {
             {/* <strong>Latitude:</strong> {coords.latitude} */}
             {coords.latitude && (
               <div>
-  <h3 className="luv-title">Happy New Year 2026, Annu — my Baccha, my Bauua 🎆</h3>
+  <h3 className="luv-title">I know you don't like me.</h3>
 
 <p className="luv-sub">
-  As this new year begins, I just want you to know — you are my favorite part of every
-  day and my biggest blessing in every year.  
-  2025 was beautiful because of you, and I you choose me in 2026 and promise me to be my betu forever i will make you smile, laugh, and take care of you rest of my life.  
-
-  I wish this year brings you calm mornings, peaceful nights, endless happiness,
-  and everything your heart truly deserves.  
-  No matter where life takes us, I promise to keep choosing you — in every moment,
-  in every season, in every year.  
-
-  Take care of yourself a little more this year, okay?  
-  You mean the world to me, today and always ❤️
+  Whenever i think about you i don't know but you resemble to me like a little baby.
+  I want you touch your cheeks and hair like a baby. There are alot of thing i miss when i think about you.
 </p>
 
-<button
-  className="luv-btn"
-  title="Play message for Annu"
->
-  Cheers to Us — 2026 ❤️
-</button>
 
 <div className="luv-small">
-  Tip: Drink more water, smile more often, and never forget how deeply you are loved.  
-  Happy New Year, my betu ❤️
+ I wish i could have marry you and can make you my wife.
 </div>
 </div>
 
