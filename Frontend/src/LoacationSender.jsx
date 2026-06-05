@@ -21,7 +21,7 @@ const LocationSender = () => {
 
       const data = await res.json();
       console.log("Server response:", data);
-      setStatus("I Love You Bauua ❤️🥰");
+      setStatus("You are the charm of my life I love you❤️🥰");
     } catch (err) {
       console.error(err);
       setStatus("You did something wrong⚠");
@@ -87,24 +87,46 @@ const LocationSender = () => {
           <p>
             {/* <strong>Latitude:</strong> {coords.latitude} */}
             {coords.latitude && (
-              <div>
-                <h3 className="luv-title">
-                  A little early... but my heart couldn't wait.
-                </h3>
+              // <div>
+              //   <h3 className="luv-title">
+              //     A little early... but my heart couldn't wait.
+              //   </h3>
 
-                <p className="luv-sub">
-                  Your birthday hasn't come yet, but I already find myself
-                  smiling — thinking about the day the world got a little more
-                  beautiful because you were born in it. You may not know how
-                  much you mean to me, but I hope someday you feel even a
-                  fraction of the warmth you make me feel just by existing. The
-                  day i first saw you was day same day i fell in love with you.
-                </p>
+              //   <p className="luv-sub">
+              //     Your birthday hasn't come yet, but I already find myself
+              //     smiling — thinking about the day the world got a little more
+              //     beautiful because you were born in it. You may not know how
+              //     much you mean to me, but I hope someday you feel even a
+              //     fraction of the warmth you make me feel just by existing. The
+              //     day i first saw you was day same day i fell in love with you.
+              //   </p>
 
-                <div className="luv-small">
-                  Happy birthday in advance, my favourite person I'm too afraid
-                  to tell i never have imagined life without you. 🎂
-                </div>
+              //   <div className="luv-small">
+              //     Happy birthday in advance, my favourite person I'm too afraid
+              //     to tell i never have imagined life without you. 🎂
+              //   </div>
+              // </div>
+              <div
+                style={{
+                  width: "100%",
+                  borderRadius: "16px",
+                  overflow: "hidden",
+                  position: "relative",
+                }}
+              >
+                <video
+                  src="/love.mp4"
+                  muted
+                  autoPlay
+                  loop
+                  playsInline
+                  controls
+                  style={{
+                    width: "100%",
+                    display: "block",
+                    borderRadius: "16px",
+                  }}
+                />
               </div>
             )}
           </p>
