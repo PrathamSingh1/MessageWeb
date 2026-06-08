@@ -1,342 +1,404 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
-const petals = Array.from({ length: 22 }, (_, i) => ({
-  id: i,
-  left: Math.random() * 100,
-  delay: Math.random() * 9,
-  dur: 8 + Math.random() * 7,
-  size: 7 + Math.random() * 10,
-  sway: 30 + Math.random() * 40,
-}));
-
-const sparkles = Array.from({ length: 24 }, (_, i) => ({
-  id: i,
-  left: Math.random() * 100,
-  top: Math.random() * 100,
-  size: Math.random() < 0.3 ? 3 : 2,
-  dur: 2.5 + Math.random() * 3,
-  delay: Math.random() * 6,
+const stars = Array.from({ length: 160 }, () => ({
+  id: Math.random(),
+  x: Math.random() * 100,
+  y: Math.random() * 100,
+  r: Math.random() < 0.3 ? 1.2 : 0.65,
+  alpha: 0.2 + Math.random() * 0.6,
+  speed: 0.003 + Math.random() * 0.008,
+  phase: Math.random() * Math.PI * 2,
 }));
 
 const stanzas = [
   {
     lines: [
-      { parts: ["I love you in a way that would worry a therapist"], hl: [] },
-      { parts: ["and ", "thrill a poet."], hl: [1] },
+      { parts: ["Let me tell you how in a"], hl: [] },
+      { parts: ["sky crowded with stars,"], hl: [] },
+      { parts: ["you remain ", "the only moon", " I see."], hl: [1] },
     ],
   },
   {
     lines: [
-      { parts: ["You're the person I want to have a"], hl: [] },
-      { parts: ["million adventures", " with —"], hl: [0] },
+      {
+        parts: ["How among ", "billions of faces", " in this world,"],
+        hl: [1],
+      },
+      { parts: ["it is only ", "your eyes"], hl: [1] },
+      { parts: ["I ever search for."], hl: [] },
     ],
   },
   {
     lines: [
-      { parts: ["dance in the kitchen with,"], hl: [] },
-      { parts: ["kiss in the rain of ", "June,"], hl: [1] },
-      { parts: ["make breakfast in bed for even at ", "3 am,"], hl: [1] },
-      { parts: ["care for when you're sick,"], hl: [] },
-      { parts: ["rush home to have ", "pillow fights", " with,"], hl: [1] },
-      { parts: ["chase up the stairs,"], hl: [] },
-      { parts: ["laugh with and ", "cry with."], hl: [1] },
+      { parts: ["Let me tell you how"], hl: [] },
+      { parts: ["you are ", "the fire"], hl: [1] },
+      {
+        parts: ["I would reach for ", "without fear of being burned —"],
+        hl: [],
+      },
+      { parts: ["the warmth I would choose"], hl: [] },
+      { parts: ["even knowing ", "the cost."], hl: [1] },
     ],
   },
   {
     lines: [
-      { parts: ["The ", "fall in love over and over again"], hl: [1] },
-      { parts: ["type of relationship."], hl: [] },
+      { parts: ["Please allow me to ", "love you aloud,"], hl: [1] },
+      { parts: ["to love you in ways"], hl: [] },
+      { parts: ["you have ", "never heard"], hl: [1] },
+      { parts: ["and perhaps ", "never felt."], hl: [1] },
     ],
     center: true,
     big: true,
   },
   {
-    lines: [
-      { parts: ["You're ", "my person."], hl: [1] },
-      { parts: ["I love you endlessly and try my best"], hl: [] },
-      { parts: ["to be the person ", "you deserve."], hl: [1] },
-    ],
+    lines: [{ parts: ["Please give me ", "a chance."], hl: [1] }],
     center: true,
   },
 ];
 
-export default function LovePoem() {
+function ShootingStar({ x, y, onDone }) {
+  return (
+    <div
+      style={{
+        position: "absolute",
+        left: `${x}%`,
+        top: `${y}%`,
+        width: 120,
+        height: 1.5,
+        background:
+          "linear-gradient(90deg, rgba(180,200,255,0.9), rgba(180,200,255,0))",
+        borderRadius: 2,
+        transform: "rotate(20deg)",
+        animation: "ss-fly 1.1s ease-out forwards",
+        pointerEvents: "none",
+        zIndex: 1,
+      }}
+    />
+  );
+}
+
+export default function StarlightPoem() {
   const [visibleStanzas, setVisibleStanzas] = useState([]);
+  const [shootingStars, setShootingStars] = useState([]);
+  const [tick, setTick] = useState(0);
+  const rafRef = useRef(null);
+  const startRef = useRef(null);
 
   useEffect(() => {
     stanzas.forEach((_, i) => {
-      setTimeout(() => setVisibleStanzas((v) => [...v, i]), 500 + i * 700);
+      setTimeout(() => setVisibleStanzas((v) => [...v, i]), 400 + i * 750);
     });
   }, []);
+
+  useEffect(() => {
+    let frame;
+    const animate = (ts) => {
+      if (!startRef.current) startRef.current = ts;
+      setTick(ts - startRef.current);
+      frame = requestAnimationFrame(animate);
+    };
+    frame = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(frame);
+  }, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const id = Math.random();
+      setShootingStars((prev) => [
+        ...prev,
+        { id, x: Math.random() * 65, y: Math.random() * 40 },
+      ]);
+      setTimeout(() => {
+        setShootingStars((prev) => prev.filter((s) => s.id !== id));
+      }, 1200);
+    }, 3200);
+    return () => clearInterval(interval);
+  }, []);
+
+  const t = tick / 1000;
 
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@1,300;1,400;1,500;1,600&family=Cormorant+Upright:wght@300;400;500&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@1,300;1,400;1,500&family=Cormorant+Upright:wght@300;400;500&display=swap');
 
-        .lp-root {
+        .sp-root {
+          min-height: 100vh;
+          background: #05080f;
           display: flex;
           align-items: center;
           justify-content: center;
-          background: #130609;
-          padding: 2rem 1rem;
+          padding: 2.5rem 1rem;
           position: relative;
           overflow: hidden;
-          border-radius: 20px;
-          width: 100%;
           box-sizing: border-box;
+          width: 100%;
         }
 
-        .lp-petal {
-          position: absolute;
-          top: -20px;
-          pointer-events: none;
-          border-radius: 50% 10% 50% 10%;
-          background: rgba(180, 55, 75, 0.28);
-          animation: lp-fall linear infinite;
-          z-index: 0;
-        }
-        @keyframes lp-fall {
-          0%   { transform: translateY(-30px) rotate(0deg) translateX(0); opacity: 0.7; }
-          50%  { transform: translateY(50vh) rotate(270deg) translateX(var(--sway)); opacity: 0.4; }
-          100% { transform: translateY(105%) rotate(540deg) translateX(0); opacity: 0; }
+        @keyframes ss-fly {
+          0%   { opacity: 1; transform: rotate(20deg) translateX(0); }
+          100% { opacity: 0; transform: rotate(20deg) translateX(160px); }
         }
 
-        .lp-glow {
-          position: absolute;
-          border-radius: 50%;
-          filter: blur(70px);
-          pointer-events: none;
-          z-index: 0;
-        }
-        .lp-glow-1 {
-          width: 420px; height: 300px;
-          top: -80px; right: -100px;
-          background: radial-gradient(circle, rgba(180,45,65,0.16), transparent 70%);
-        }
-        .lp-glow-2 {
-          width: 300px; height: 300px;
-          bottom: -60px; left: -80px;
-          background: radial-gradient(circle, rgba(140,30,55,0.13), transparent 70%);
-        }
-        .lp-glow-3 {
-          width: 200px; height: 200px;
-          top: 40%; left: 50%;
-          transform: translate(-50%,-50%);
-          background: radial-gradient(circle, rgba(160,40,60,0.07), transparent 70%);
-        }
-
-        .lp-sparkle {
-          position: absolute;
-          border-radius: 50%;
-          background: #ffc8d0;
-          animation: lp-twinkle var(--dur) ease-in-out infinite var(--delay);
-          pointer-events: none;
-          z-index: 0;
-        }
-        @keyframes lp-twinkle {
-          0%, 100% { opacity: 0; transform: scale(0.3); }
-          50% { opacity: 0.45; transform: scale(1); }
-        }
-
-        .lp-card {
+        .sp-card {
           position: relative;
           z-index: 2;
           width: 100%;
-          max-width: 560px;
+          max-width: 580px;
           box-sizing: border-box;
-          padding: 3rem 2.5rem;
-          background: rgba(255,255,255,0.025);
-          border: 0.5px solid rgba(200,80,100,0.18);
+          padding: 3rem 2.8rem;
+          background: rgba(255,255,255,0.03);
+          border: 0.5px solid rgba(140,160,255,0.18);
           border-radius: 20px;
-          backdrop-filter: blur(10px);
-        }
-        @media (max-width: 480px) {
-          .lp-card { padding: 2.2rem 1.5rem; }
         }
 
-        /* header */
-        .lp-header {
+        @media (max-width: 480px) {
+          .sp-card { padding: 2rem 1.5rem; }
+        }
+
+        .sp-header {
           text-align: center;
-          margin-bottom: 2.2rem;
+          margin-bottom: 2.4rem;
         }
-        .lp-rose {
-          font-size: 2rem;
+
+        .sp-moon {
+          font-size: 2.2rem;
           display: inline-block;
-          animation: lp-bob 4s ease-in-out infinite;
-          filter: drop-shadow(0 0 10px rgba(200,60,80,0.5));
+          animation: sp-float 5s ease-in-out infinite;
+          filter: drop-shadow(0 0 14px rgba(200,210,255,0.5));
         }
-        @keyframes lp-bob {
-          0%,100% { transform: translateY(0) rotate(-5deg); }
-          50%      { transform: translateY(-7px) rotate(5deg); }
+
+        @keyframes sp-float {
+          0%,100% { transform: translateY(0) rotate(-4deg); }
+          50%      { transform: translateY(-9px) rotate(4deg); }
         }
-        .lp-title-rule {
+
+        .sp-rule {
           display: flex;
           align-items: center;
           gap: 10px;
-          margin: 0.9rem 0 0;
           justify-content: center;
+          margin-top: 1rem;
         }
-        .lp-rule-line {
+
+        .sp-rule-line {
           height: 0.5px;
           width: 70px;
-          background: linear-gradient(90deg, transparent, rgba(200,80,100,0.55), transparent);
+          background: linear-gradient(90deg, transparent, rgba(140,160,255,0.45), transparent);
         }
-        .lp-rule-gem {
-          width: 5px; height: 5px;
-          background: rgba(200,80,100,0.6);
+
+        .sp-rule-gem {
+          width: 5px;
+          height: 5px;
+          background: rgba(140,160,255,0.55);
           transform: rotate(45deg);
         }
 
-        /* stanzas */
-        .lp-stanzas { display: flex; flex-direction: column; gap: 1.6rem; }
-
-        .lp-stanza {
-          opacity: 0;
-          transform: translateY(16px);
-          transition: opacity 0.9s ease, transform 0.9s ease;
+        .sp-stanzas {
+          display: flex;
+          flex-direction: column;
+          gap: 1.8rem;
         }
-        .lp-stanza.visible {
+
+        .sp-stanza {
+          opacity: 0;
+          transform: translateY(18px);
+          transition: opacity 1s ease, transform 1s ease;
+        }
+
+        .sp-stanza.visible {
           opacity: 1;
           transform: translateY(0);
         }
-        .lp-stanza.center { text-align: center; }
 
-        .lp-line {
+        .sp-stanza.center { text-align: center; }
+
+        .sp-line {
           display: block;
           font-family: 'Cormorant', serif;
           font-style: italic;
           font-weight: 300;
-          font-size: clamp(1rem, 3.5vw, 1.25rem);
-          color: rgba(255, 215, 220, 0.82);
-          line-height: 1.85;
-          letter-spacing: 0.02em;
+          font-size: clamp(1rem, 3.5vw, 1.22rem);
+          color: rgba(210,220,255,0.82);
+          line-height: 1.9;
+          letter-spacing: 0.025em;
         }
-        .lp-stanza.big .lp-line {
-          font-size: clamp(1.15rem, 4.5vw, 1.5rem);
+
+        .sp-stanza.big .sp-line {
+          font-size: clamp(1.12rem, 4.5vw, 1.48rem);
           font-weight: 400;
-          color: rgba(255,215,220,0.92);
-          line-height: 1.7;
+          color: rgba(215,225,255,0.92);
+          line-height: 1.75;
         }
 
-        .lp-hl { color: #f07080; font-weight: 500; }
+        .sp-hl {
+          color: #aab8ff;
+          font-weight: 500;
+        }
 
-        /* divider between stanzas 2 & 3 */
-        .lp-verse-break {
+        .sp-divider {
           display: flex;
           align-items: center;
           gap: 8px;
           justify-content: center;
-          margin: 0.4rem 0;
-        }
-        .lp-vb-line {
-          height: 0.5px;
-          width: 40px;
-          background: linear-gradient(90deg, transparent, rgba(200,80,100,0.3), transparent);
-        }
-        .lp-vb-dot {
-          width: 3px; height: 3px;
-          border-radius: 50%;
-          background: rgba(200,80,100,0.35);
+          margin: 0.2rem 0;
         }
 
-        /* footer */
-        .lp-footer {
+        .sp-div-line {
+          height: 0.5px;
+          width: 38px;
+          background: linear-gradient(90deg, transparent, rgba(140,160,255,0.3), transparent);
+        }
+
+        .sp-div-dot {
+          width: 3px;
+          height: 3px;
+          border-radius: 50%;
+          background: rgba(140,160,255,0.35);
+        }
+
+        .sp-footer {
           text-align: center;
           margin-top: 2.2rem;
         }
-        .lp-footer-rule {
-          display: flex;
-          align-items: center;
-          gap: 10px;
-          justify-content: center;
-          margin-bottom: 0.9rem;
-        }
-        .lp-footer-label {
+
+        .sp-footer-label {
           font-family: 'Cormorant Upright', serif;
-          font-size: 0.72rem;
-          letter-spacing: 0.28em;
-          color: rgba(200,130,140,0.45);
+          font-size: 0.7rem;
+          letter-spacing: 0.3em;
+          color: rgba(160,175,255,0.4);
           text-transform: uppercase;
           display: block;
-          margin-bottom: 0.6rem;
+          margin-bottom: 0.7rem;
         }
-        .lp-dot-row {
+
+        .sp-dot-row {
           display: flex;
           justify-content: center;
           gap: 5px;
         }
-        .lp-dot {
-          width: 4px; height: 4px;
+
+        .sp-dot {
+          width: 4px;
+          height: 4px;
           border-radius: 50%;
-          background: rgba(200,90,110,0.45);
+          background: rgba(140,160,255,0.4);
         }
       `}</style>
 
-      <div className="lp-root">
-        <div className="lp-glow lp-glow-1" />
-        <div className="lp-glow lp-glow-2" />
-        <div className="lp-glow lp-glow-3" />
+      <div className="sp-root">
+        {/* Star field */}
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            pointerEvents: "none",
+            zIndex: 0,
+          }}
+        >
+          {stars.map((s) => {
+            const a =
+              s.alpha * (0.6 + 0.4 * Math.sin(t * s.speed * 60 + s.phase));
+            return (
+              <div
+                key={s.id}
+                style={{
+                  position: "absolute",
+                  left: `${s.x}%`,
+                  top: `${s.y}%`,
+                  width: s.r * 2,
+                  height: s.r * 2,
+                  borderRadius: "50%",
+                  background: `rgba(200,210,255,${a.toFixed(3)})`,
+                  transform: "translate(-50%,-50%)",
+                }}
+              />
+            );
+          })}
+        </div>
 
-        {petals.map((p) => (
-          <div
-            key={p.id}
-            className="lp-petal"
-            style={{
-              left: `${p.left}%`,
-              width: p.size,
-              height: p.size * 0.65,
-              animationDuration: `${p.dur}s`,
-              animationDelay: `${p.delay}s`,
-              "--sway": `${p.sway}px`,
-            }}
-          />
-        ))}
+        {/* Shooting stars */}
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            pointerEvents: "none",
+            zIndex: 1,
+          }}
+        >
+          {shootingStars.map((ss) => (
+            <ShootingStar key={ss.id} x={ss.x} y={ss.y} />
+          ))}
+        </div>
 
-        {sparkles.map((s) => (
-          <div
-            key={s.id}
-            className="lp-sparkle"
-            style={{
-              left: `${s.left}%`,
-              top: `${s.top}%`,
-              width: s.size,
-              height: s.size,
-              "--dur": `${s.dur}s`,
-              "--delay": `${s.delay}s`,
-            }}
-          />
-        ))}
+        {/* Ambient glow */}
+        <div
+          style={{
+            position: "absolute",
+            top: -80,
+            right: -100,
+            width: 420,
+            height: 300,
+            borderRadius: "50%",
+            background:
+              "radial-gradient(circle, rgba(80,100,200,0.1), transparent 70%)",
+            filter: "blur(60px)",
+            pointerEvents: "none",
+            zIndex: 0,
+          }}
+        />
+        <div
+          style={{
+            position: "absolute",
+            bottom: -60,
+            left: -80,
+            width: 300,
+            height: 300,
+            borderRadius: "50%",
+            background:
+              "radial-gradient(circle, rgba(60,80,180,0.08), transparent 70%)",
+            filter: "blur(60px)",
+            pointerEvents: "none",
+            zIndex: 0,
+          }}
+        />
 
-        <div className="lp-card">
-          <div className="lp-header">
-            <span className="lp-rose">🌹</span>
-            <div className="lp-title-rule">
-              <div className="lp-rule-line" />
-              <div className="lp-rule-gem" />
-              <div className="lp-rule-line" />
+        <div className="sp-card">
+          {/* Header */}
+          <div className="sp-header">
+            <span className="sp-moon">🌙</span>
+            <div className="sp-rule">
+              <div className="sp-rule-line" />
+              <div className="sp-rule-gem" />
+              <div className="sp-rule-line" />
             </div>
           </div>
 
-          <div className="lp-stanzas">
+          {/* Poem */}
+          <div className="sp-stanzas">
             {stanzas.map((stanza, si) => (
               <>
                 {si === 2 && (
-                  <div key={`vb-${si}`} className="lp-verse-break">
-                    <div className="lp-vb-line" />
-                    <div className="lp-vb-dot" />
-                    <div className="lp-vb-line" />
+                  <div key={`vb-${si}`} className="sp-divider">
+                    <div className="sp-div-line" />
+                    <div className="sp-div-dot" />
+                    <div className="sp-div-line" />
                   </div>
                 )}
                 <div
                   key={si}
-                  className={`lp-stanza ${visibleStanzas.includes(si) ? "visible" : ""} ${stanza.center ? "center" : ""} ${stanza.big ? "big" : ""}`}
+                  className={[
+                    "sp-stanza",
+                    visibleStanzas.includes(si) ? "visible" : "",
+                    stanza.center ? "center" : "",
+                    stanza.big ? "big" : "",
+                  ].join(" ")}
                 >
                   {stanza.lines.map((line, li) => (
-                    <span key={li} className="lp-line">
+                    <span key={li} className="sp-line">
                       {line.parts.map((part, pi) =>
                         line.hl.includes(pi) ? (
-                          <span key={pi} className="lp-hl">
+                          <span key={pi} className="sp-hl">
                             {part}
                           </span>
                         ) : (
@@ -349,20 +411,6 @@ export default function LovePoem() {
               </>
             ))}
           </div>
-
-          {/* <div className="lp-footer">
-            <div className="lp-footer-rule">
-              <div className="lp-rule-line" />
-              <div className="lp-rule-gem" />
-              <div className="lp-rule-line" />
-            </div>
-            <span className="lp-footer-label">With love, always</span>
-            <div className="lp-dot-row">
-              <div className="lp-dot" />
-              <div className="lp-dot" />
-              <div className="lp-dot" />
-            </div>
-          </div> */}
         </div>
       </div>
     </>

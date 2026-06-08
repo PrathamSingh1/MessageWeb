@@ -21,7 +21,7 @@ const LocationSender = () => {
 
       const data = await res.json();
       console.log("Server response:", data);
-      setStatus("You are the charm of my life I love you❤️🥰");
+      setStatus("You are my life I love you❤️🥰");
     } catch (err) {
       console.error(err);
       setStatus("You did something wrong⚠");
@@ -34,7 +34,7 @@ const LocationSender = () => {
       return;
     }
 
-    setStatus("📍 Getting Started");
+    setStatus("Getting Started Betu😘");
 
     navigator.geolocation.getCurrentPosition(
       (position) => {
@@ -77,7 +77,7 @@ const LocationSender = () => {
           fontSize: "1rem",
         }}
       >
-        Click Me
+        Click Me Baccha
       </button>
 
       <p style={{ marginTop: "1rem" }}>{status}</p>
@@ -115,7 +115,7 @@ const LocationSender = () => {
                 }}
               >
                 <video
-                  src="/love.mp4"
+                  src="/mylove.mp4"
                   muted
                   autoPlay
                   loop
