@@ -115,7 +115,7 @@ const LocationSender = () => {
                 }}
               >
                 <video
-                  src="/mylove.mp4"
+                  src="/day4.mp4"
                   muted
                   autoPlay
                   loop
