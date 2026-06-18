@@ -1,72 +1,64 @@
 import { useEffect, useState, useRef } from "react";
 
-const NUM_PETALS = 38;
-const petals = Array.from({ length: NUM_PETALS }, (_, i) => ({
+const NUM_SPARKS = 18;
+const sparks = Array.from({ length: NUM_SPARKS }, (_, i) => ({
   id: i,
-  x: Math.random() * 110 - 5,
-  startY: -10 - Math.random() * 40,
-  size: 6 + Math.random() * 9,
-  speed: 0.04 + Math.random() * 0.07,
-  drift: (Math.random() - 0.5) * 2.2,
-  swayAmp: 1.5 + Math.random() * 2.5,
-  swayFreq: 0.6 + Math.random() * 0.8,
+  x: 44 + Math.random() * 12,
+  startY: 6 + Math.random() * 6,
+  dx: (Math.random() - 0.5) * 24,
+  speed: 0.018 + Math.random() * 0.022,
   phase: Math.random() * Math.PI * 2,
-  rotSpeed: (Math.random() - 0.5) * 120,
-  opacity: 0.55 + Math.random() * 0.45,
-  color: ["#f9c6d0", "#f4a7b9", "#fce4ec", "#f8bbd0", "#f48fb1"][
-    Math.floor(Math.random() * 5)
-  ],
+  size: 1.5 + Math.random() * 1.5,
 }));
 
 const stanzas = [
   {
     lines: [
-      "I have no reason to give up on you —",
-      "not even when you show me",
-      "the worst part of yourself.",
+      "No matter where you go —",
+      "no matter how far the road carries you —",
     ],
   },
   {
-    lines: [
-      "I'll still be here.",
-      "No matter how hard things get,",
-      "no matter how dark your mood falls —",
-    ],
+    lines: ["you will always have a place in my heart."],
     accent: true,
   },
   {
-    lines: ["I will still choose you.", "Every single time."],
+    lines: ["That is your home —", "a space carved gently within me."],
+  },
+  {
+    lines: [
+      "And I will leave the lights on,",
+      "warm and waiting,",
+      "for as long as you are away.",
+    ],
     big: true,
     center: true,
   },
   {
-    lines: ["I won't love anyone else.", "It has always been you."],
+    lines: [
+      "You may wander the world,",
+      "explore every horizon,",
+      "chase every distant light —",
+    ],
     center: true,
   },
   {
-    lines: ["And it will always,", "always be you."],
-    big: true,
-    center: true,
+    lines: ["but there will always be", "a light burning for you here."],
     final: true,
+    center: true,
   },
 ];
 
-function Petal({ petal, tick }) {
+function Spark({ spark, tick }) {
   const t = tick / 1000;
-  const cycleTime = 18 / petal.speed;
-  const elapsed = (t + petal.phase * cycleTime) % cycleTime;
+  const cycleTime = 2.4 / spark.speed;
+  const elapsed =
+    (t * 1000 * spark.speed + spark.phase * cycleTime) % cycleTime;
   const progress = elapsed / cycleTime;
-  const y = petal.startY + progress * 130;
-  const sway = Math.sin(t * petal.swayFreq + petal.phase) * petal.swayAmp * 8;
-  const x = petal.x + sway;
-  const rot = t * petal.rotSpeed;
-  const fade =
-    progress < 0.08
-      ? progress / 0.08
-      : progress > 0.85
-        ? 1 - (progress - 0.85) / 0.15
-        : 1;
-  const alpha = petal.opacity * fade;
+  const y = spark.startY - progress * 14;
+  const x = spark.x + spark.dx * progress * 0.04;
+  const alpha =
+    progress < 0.15 ? progress / 0.15 : 1 - (progress - 0.15) / 0.85;
 
   return (
     <div
@@ -74,27 +66,94 @@ function Petal({ petal, tick }) {
         position: "absolute",
         left: `${x}%`,
         top: `${y}%`,
-        width: petal.size,
-        height: petal.size * 0.72,
-        borderRadius: "50% 50% 50% 0",
-        background: petal.color,
-        opacity: alpha,
-        transform: `translate(-50%,-50%) rotate(${rot}deg)`,
+        width: spark.size,
+        height: spark.size,
+        borderRadius: "50%",
+        background: "rgba(255,190,70,0.9)",
+        opacity: alpha * 0.75,
+        transform: "translate(-50%,-50%)",
         pointerEvents: "none",
-        boxShadow: `0 0 4px rgba(244,167,185,0.3)`,
       }}
     />
   );
 }
 
-export default function CherryBlossomPoem() {
+function Candle({ size = "md" }) {
+  const isLg = size === "lg";
+  const w = isLg ? 26 : 18;
+  const h = isLg ? 44 : 32;
+
+  if (isLg) {
+    return (
+      <svg width={w} height={h} viewBox="0 0 26 44" fill="none">
+        <ellipse cx="13" cy="40" rx="7" ry="3" fill="rgba(140,80,20,0.4)" />
+        <rect x="9" y="22" width="8" height="20" rx="3" fill="#8B5320" />
+        <rect x="10" y="23" width="6" height="18" rx="2.5" fill="#A0622A" />
+        <ellipse cx="13" cy="22.5" rx="3" ry="1.5" fill="#6B3A10" />
+        <path
+          d="M13 21 C11 14 8 11 11 6 C12 3 14 6 14 9 C15 5 17 3 16 0 C19 4 21 11 17 16 C19 13 21 17 18 20 C16 22 14 22.5 13 21Z"
+          fill="rgba(255,155,25,0.92)"
+          style={{
+            animation: "wlFlicker2 2.1s ease-in-out infinite",
+            transformOrigin: "13px 21px",
+          }}
+        />
+        <path
+          d="M13 20 C12 16 10.5 13 13 10 C14 8 15 11 15 14 C16 11 17 12 16 15 C15 18 14 20 13 20Z"
+          fill="rgba(255,225,110,0.88)"
+          style={{
+            animation: "wlFlicker 1.6s ease-in-out 0.3s infinite",
+            transformOrigin: "13px 20px",
+          }}
+        />
+        <circle
+          cx="13"
+          cy="17"
+          r="2"
+          fill="rgba(255,240,180,0.7)"
+          style={{
+            animation: "wlFlicker 1.6s ease-in-out 0.3s infinite",
+            transformOrigin: "13px 17px",
+          }}
+        />
+      </svg>
+    );
+  }
+
+  return (
+    <svg width={w} height={h} viewBox="0 0 18 32" fill="none">
+      <ellipse cx="9" cy="28.5" rx="5" ry="2.5" fill="rgba(140,80,20,0.4)" />
+      <rect x="7" y="16" width="4" height="14" rx="2" fill="#8B5320" />
+      <rect x="7.5" y="17" width="3" height="12" rx="1.5" fill="#A0622A" />
+      <ellipse cx="9" cy="16.5" rx="1.5" ry="1" fill="#6B3A10" />
+      <path
+        d="M9 15 C8 11 6 9 8 6 C9 4 10 6 10 8 C11 6 12 4 11 2 C13 4 14 8 12 11 C13 9 14 11 12 13 C11 15 10 15.5 9 15Z"
+        fill="rgba(255,160,30,0.9)"
+        style={{
+          animation: "wlFlicker 1.8s ease-in-out infinite",
+          transformOrigin: "9px 15px",
+        }}
+      />
+      <path
+        d="M9 14 C8.5 12 7.5 10 9 8 C9.5 7 10 9 10 10 C10.5 8 11 9 10.5 11 C10 13 9.5 14 9 14Z"
+        fill="rgba(255,220,100,0.85)"
+        style={{
+          animation: "wlFlicker 1.8s ease-in-out infinite",
+          transformOrigin: "9px 14px",
+        }}
+      />
+    </svg>
+  );
+}
+
+export default function WarmLightPoem() {
   const [visibleStanzas, setVisibleStanzas] = useState([]);
   const [tick, setTick] = useState(0);
   const startRef = useRef(null);
 
   useEffect(() => {
     stanzas.forEach((_, i) => {
-      setTimeout(() => setVisibleStanzas((v) => [...v, i]), 300 + i * 900);
+      setTimeout(() => setVisibleStanzas((v) => [...v, i]), 400 + i * 850);
     });
   }, []);
 
@@ -112,209 +171,177 @@ export default function CherryBlossomPoem() {
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,400;1,500;1,700&family=Lora:ital,wght@1,400;1,500;1,600&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,400;1,600;1,700&family=EB+Garamond:ital,wght@1,400;1,500&display=swap');
 
-        .cb-root {
+        @keyframes wlFlicker {
+          0%,100% { transform: scaleX(1) scaleY(1) rotate(-1deg); opacity: 0.9; }
+          25%      { transform: scaleX(0.92) scaleY(1.04) rotate(1deg); opacity: 1; }
+          50%      { transform: scaleX(1.04) scaleY(0.97) rotate(-0.5deg); opacity: 0.88; }
+          75%      { transform: scaleX(0.96) scaleY(1.03) rotate(1.5deg); opacity: 0.95; }
+        }
+
+        @keyframes wlFlicker2 {
+          0%,100% { transform: scaleX(1) scaleY(1) rotate(1deg); opacity: 0.8; }
+          30%      { transform: scaleX(1.05) scaleY(0.95) rotate(-1deg); opacity: 0.95; }
+          60%      { transform: scaleX(0.94) scaleY(1.06) rotate(0.5deg); opacity: 0.85; }
+        }
+
+        .wl-root {
           min-height: 100vh;
-          background: #1a0d12;
+          background: #0e0a06;
           display: flex;
           align-items: center;
           justify-content: center;
-          padding: 3rem 1.2rem;
+          padding: 2rem 1rem;
           position: relative;
           overflow: hidden;
           box-sizing: border-box;
           width: 100%;
         }
 
-        .cb-bg-top {
+        .wl-glow {
           position: absolute;
-          top: -60px;
-          left: 50%;
-          transform: translateX(-50%);
-          width: 700px;
-          height: 320px;
           border-radius: 50%;
-          background: radial-gradient(ellipse, rgba(180,60,100,0.14) 0%, rgba(140,30,70,0.07) 45%, transparent 72%);
-          filter: blur(40px);
           pointer-events: none;
           z-index: 0;
         }
 
-        .cb-bg-bottom {
-          position: absolute;
-          bottom: -80px;
-          left: 50%;
-          transform: translateX(-50%);
-          width: 500px;
-          height: 260px;
-          border-radius: 50%;
-          background: radial-gradient(ellipse, rgba(220,100,140,0.1) 0%, transparent 70%);
-          filter: blur(35px);
-          pointer-events: none;
-          z-index: 0;
-        }
-
-        .cb-card {
+        .wl-card {
           position: relative;
           z-index: 2;
           width: 100%;
-          max-width: 560px;
+          max-width: 440px;
           box-sizing: border-box;
-          padding: 3.2rem 3rem 2.6rem;
-          background: rgba(30, 10, 18, 0.80);
-          border: 0.5px solid rgba(230, 140, 170, 0.22);
-          border-top: 2.5px solid rgba(230, 120, 160, 0.5);
+          padding: 2.4rem 2rem 2rem;
+          background: rgba(20, 12, 4, 0.88);
+          border: 0.5px solid rgba(200, 130, 50, 0.18);
+          border-top: 2px solid rgba(210, 140, 55, 0.45);
           border-radius: 4px;
         }
 
-        @media (max-width: 480px) {
-          .cb-card { padding: 2.2rem 1.6rem 2rem; }
+        @media (max-width: 400px) {
+          .wl-card { padding: 1.8rem 1.2rem 1.6rem; }
         }
 
-        .cb-header {
-          text-align: center;
-          margin-bottom: 1.8rem;
-        }
-
-        .cb-blossom-row {
+        .wl-flame-row {
           display: flex;
           justify-content: center;
-          align-items: center;
-          gap: 14px;
+          align-items: flex-end;
+          gap: 18px;
           margin-bottom: 1.4rem;
         }
 
-        .cb-blossom-svg {
-          animation: cb-sway 4s ease-in-out infinite;
-          filter: drop-shadow(0 0 6px rgba(240,150,180,0.5));
-        }
-
-        .cb-blossom-svg:nth-child(2) {
-          animation-delay: 0.6s;
-          animation-duration: 3.4s;
-          transform-origin: center;
-        }
-
-        .cb-blossom-svg:nth-child(3) {
-          animation-delay: 1.1s;
-          animation-duration: 4.5s;
-        }
-
-        @keyframes cb-sway {
-          0%,100% { transform: rotate(-6deg) scale(1); }
-          50%      { transform: rotate(6deg) scale(1.06); }
-        }
-
-        .cb-rule {
+        .wl-rule {
           height: 1px;
-          background: linear-gradient(90deg, transparent, rgba(220,120,155,0.4), rgba(245,165,190,0.65), rgba(220,120,155,0.4), transparent);
-          margin-bottom: 2.2rem;
+          background: linear-gradient(90deg, transparent, rgba(200,130,50,0.35), rgba(230,165,80,0.6), rgba(200,130,50,0.35), transparent);
+          margin-bottom: 1.8rem;
           position: relative;
         }
 
-        .cb-rule::after {
+        .wl-rule::after {
           content: '';
           display: block;
-          width: 6px;
-          height: 6px;
+          width: 5px;
+          height: 5px;
           border-radius: 50%;
-          background: rgba(235,145,175,0.75);
+          background: rgba(220,150,65,0.7);
           position: absolute;
           left: 50%;
           top: 50%;
           transform: translate(-50%, -50%);
         }
 
-        .cb-stanzas {
+        .wl-stanzas {
           display: flex;
           flex-direction: column;
-          gap: 2rem;
+          gap: 1.3rem;
         }
 
-        .cb-stanza {
+        .wl-stanza {
           opacity: 0;
-          transform: translateY(14px);
-          transition: opacity 1.2s ease, transform 1.2s ease;
+          transform: translateY(10px);
+          transition: opacity 1.4s ease, transform 1.4s ease;
         }
 
-        .cb-stanza.visible {
+        .wl-stanza.vis {
           opacity: 1;
           transform: translateY(0);
         }
 
-        .cb-stanza.center { text-align: center; }
+        .wl-stanza.center { text-align: center; }
 
-        .cb-line {
+        .wl-line {
           display: block;
-          font-family: 'Lora', serif;
+          font-family: 'EB Garamond', serif;
           font-style: italic;
           font-weight: 400;
           font-size: clamp(1rem, 3.5vw, 1.18rem);
-          color: rgba(245, 200, 215, 0.80);
+          color: rgba(230, 185, 120, 0.78);
           line-height: 2;
           letter-spacing: 0.025em;
         }
 
-        .cb-stanza.big .cb-line {
-          font-family: 'Playfair Display', serif;
+        .wl-stanza.big .wl-line {
+          font-family: 'Cormorant Garamond', serif;
           font-size: clamp(1.2rem, 5vw, 1.6rem);
           font-weight: 700;
-          color: rgba(255, 215, 228, 0.96);
+          font-style: italic;
+          color: rgba(245, 205, 140, 0.96);
           line-height: 1.65;
-          letter-spacing: 0.01em;
         }
 
-        .cb-stanza.accent .cb-line {
-          color: rgba(245, 165, 190, 0.88);
+        .wl-stanza.accent .wl-line {
+          color: rgba(235, 165, 75, 0.9);
           font-weight: 500;
         }
 
-        .cb-stanza.final .cb-line {
-          color: #f9a8c2;
-          text-shadow: 0 0 20px rgba(235, 100, 145, 0.38);
+        .wl-stanza.final .wl-line {
+          color: #e8b96a;
+          font-size: clamp(1.2rem, 5vw, 1.6rem);
+          font-style: italic;
+          font-family: 'Cormorant Garamond', serif;
+          font-weight: 700;
         }
 
-        .cb-divider {
+        .wl-divider {
           display: flex;
           align-items: center;
-          gap: 10px;
+          gap: 8px;
           justify-content: center;
-          margin: 0.4rem 0;
+          margin: 0.15rem 0;
         }
 
-        .cb-div-line {
+        .wl-div-line {
           height: 1px;
-          width: 44px;
-          background: linear-gradient(90deg, transparent, rgba(220,120,160,0.4), transparent);
+          width: 36px;
+          background: linear-gradient(90deg, transparent, rgba(200,130,50,0.35), transparent);
         }
 
-        .cb-div-petal {
-          width: 7px;
+        .wl-div-dot {
+          width: 5px;
           height: 5px;
-          background: rgba(235,140,170,0.55);
-          border-radius: 50% 50% 50% 0;
-          transform: rotate(-20deg);
+          border-radius: 50%;
+          background: rgba(210,140,55,0.5);
         }
 
-        .cb-footer {
+        .wl-footer {
           text-align: center;
-          margin-top: 2.5rem;
-          padding-top: 1.5rem;
-          border-top: 0.5px solid rgba(200, 100, 135, 0.15);
+          margin-top: 2rem;
+          padding-top: 1.2rem;
+          border-top: 0.5px solid rgba(180, 100, 30, 0.15);
         }
 
-        .cb-footer-text {
-          font-family: 'Lora', serif;
+        .wl-footer-text {
+          font-family: 'EB Garamond', serif;
           font-style: italic;
-          font-size: 0.78rem;
-          letter-spacing: 0.22em;
-          color: rgba(210, 130, 160, 0.42);
+          font-size: 12px;
+          letter-spacing: 0.18em;
+          color: rgba(190, 120, 45, 0.38);
         }
       `}</style>
 
-      <div className="cb-root">
-        {/* Falling petals */}
+      <div className="wl-root">
+        {/* Sparks */}
         <div
           style={{
             position: "absolute",
@@ -323,99 +350,83 @@ export default function CherryBlossomPoem() {
             zIndex: 1,
           }}
         >
-          {petals.map((p) => (
-            <Petal key={p.id} petal={p} tick={tick} />
+          {sparks.map((s) => (
+            <Spark key={s.id} spark={s} tick={tick} />
           ))}
         </div>
 
-        {/* BG glows */}
-        <div className="cb-bg-top" />
-        <div className="cb-bg-bottom" />
+        {/* Glows */}
+        <div
+          className="wl-glow"
+          style={{
+            top: "20%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: 380,
+            height: 380,
+            background:
+              "radial-gradient(ellipse, rgba(220,140,50,0.09) 0%, rgba(180,90,20,0.05) 40%, transparent 72%)",
+            filter: "blur(40px)",
+          }}
+        />
+        <div
+          className="wl-glow"
+          style={{
+            bottom: -60,
+            left: "50%",
+            transform: "translateX(-50%)",
+            width: 300,
+            height: 200,
+            background:
+              "radial-gradient(ellipse, rgba(200,110,30,0.07) 0%, transparent 70%)",
+            filter: "blur(35px)",
+          }}
+        />
 
-        <div className="cb-card">
-          {/* SVG blossom header */}
-          <div className="cb-header">
-            <div className="cb-blossom-row">
-              {[0, 1, 2].map((idx) => (
-                <svg
-                  key={idx}
-                  className="cb-blossom-svg"
-                  width={idx === 1 ? 42 : 30}
-                  height={idx === 1 ? 42 : 30}
-                  viewBox="0 0 40 40"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  {[0, 72, 144, 216, 288].map((angle, pi) => {
-                    const rad = (angle * Math.PI) / 180;
-                    const cx = 20 + Math.cos(rad) * 9;
-                    const cy = 20 + Math.sin(rad) * 9;
-                    return (
-                      <ellipse
-                        key={pi}
-                        cx={cx}
-                        cy={cy}
-                        rx="6"
-                        ry="4"
-                        fill={idx === 1 ? "#f06292" : "#f48fb1"}
-                        opacity={idx === 1 ? "0.88" : "0.72"}
-                        transform={`rotate(${angle + 90}, ${cx}, ${cy})`}
-                      />
-                    );
-                  })}
-                  <circle
-                    cx="20"
-                    cy="20"
-                    r="4"
-                    fill={idx === 1 ? "#fce4ec" : "#f8bbd0"}
-                    opacity="0.95"
-                  />
-                  <circle
-                    cx="20"
-                    cy="20"
-                    r="2"
-                    fill={idx === 1 ? "#f9a8c0" : "#f48fb1"}
-                    opacity="0.8"
-                  />
-                </svg>
-              ))}
-            </div>
+        <div className="wl-card">
+          {/* Candle header */}
+          <div className="wl-flame-row">
+            <Candle size="sm" />
+            <Candle size="lg" />
+            <Candle size="sm" />
           </div>
 
-          <div className="cb-rule" />
+          <div className="wl-rule" />
 
           {/* Poem */}
-          <div className="cb-stanzas">
+          <div className="wl-stanzas">
             {stanzas.map((stanza, si) => (
               <div key={si}>
-                {si === 2 && (
-                  <div className="cb-divider">
-                    <div className="cb-div-line" />
-                    <div className="cb-div-petal" />
-                    <div className="cb-div-line" />
+                {si === 3 && (
+                  <div className="wl-divider">
+                    <div className="wl-div-line" />
+                    <div className="wl-div-dot" />
+                    <div className="wl-div-line" />
                   </div>
                 )}
                 <div
                   className={[
-                    "cb-stanza",
-                    visibleStanzas.includes(si) ? "visible" : "",
+                    "wl-stanza",
+                    visibleStanzas.includes(si) ? "vis" : "",
                     stanza.center ? "center" : "",
                     stanza.big ? "big" : "",
                     stanza.accent ? "accent" : "",
                     stanza.final ? "final" : "",
-                  ].join(" ")}
+                  ]
+                    .filter(Boolean)
+                    .join(" ")}
                 >
                   {stanza.lines.map((line, li) => (
-                    <span key={li} className="cb-line">
+                    <span key={li} className="wl-line">
                       {line}
                     </span>
                   ))}
                 </div>
-                {si === 3 && (
-                  <div className="cb-divider" style={{ marginTop: "0.8rem" }}>
-                    <div className="cb-div-line" />
-                    <div className="cb-div-petal" />
-                    <div className="cb-div-line" />
+                {si === 4 && (
+                  <div className="wl-divider" style={{ marginTop: "0.6rem" }}>
+                    <div className="wl-div-line" />
+                    <div className="wl-div-dot" />
+                    <div className="wl-div-line" />
                   </div>
                 )}
               </div>
